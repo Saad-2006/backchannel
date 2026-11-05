@@ -1,0 +1,12 @@
+# secrets and local state
+.clerk-creds.json
+.switch/
+*.env
+.env*
+# run output
+logs/
+*.jsonl
+__pycache__/
+.pytest_cache/
+.venv/
+.DS_Store
