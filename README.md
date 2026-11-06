@@ -82,6 +82,10 @@ The Clerk's key lands in `clerk/.clerk-creds.json` (gitignored). The registratio
 | Redelivered or failed messages? | A message id is handled once. A failed post is logged as a failed delivery; the decision stands. |
 | Cryptographically private? | No. Controlled disclosure through a trusted mediator. |
 
+## What the recordings show
+
+Three runs, same seals: the default mode where only amounts cross, the guard blocking a leaky line, and the same line crossing with the guard off. Transcripts and notes are in `docs/leak-test/`. During recording one teammate operated both human seats from two Discord accounts, `agency-side` and `client-side`; the mediator account typed in neither room.
+
 ## Limits, honestly
 
 - **The host sees everything.** That is why the host is a neutral mediator. Keeping a mediator honest is a contract problem, not a code problem.
