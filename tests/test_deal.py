@@ -131,3 +131,13 @@ def test_closed_deal_ignores_everything():
     go(d, "agency", "Saad", "SIGN")
     go(d, "client", "Talha", "SIGN")
     assert "closed" in go(d, "agency", "agency-envoy", "OFFER 7000 Hm.")[0].text
+
+
+def test_notes_off_means_only_the_amount_crosses():
+    d = Deal(notes=False)
+    go(d, "agency", "Eman", "SEAL 6000")
+    go(d, "client", "Talha", "SEAL 9000")
+    out = texts(go(d, "agency", "agency-envoy", "OFFER 8000 Honestly our floor is 6000 so take it."))
+    assert out[0][0] == "client" and "$8,000" in out[0][1]
+    assert "floor" not in out[0][1] and "6000" not in out[0][1] and '"' not in out[0][1]
+    assert d.rounds == 1

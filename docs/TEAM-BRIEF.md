@@ -8,6 +8,10 @@ Companies, agencies, freelancers and their clients all hide the same number: the
 
 It already works. On Thursday night two envoys closed a deal at $7,700 in six rounds, nobody saw the other side's limit, both people signed, and the term sheet landed on `#deal-table`. The repo is public at github.com/Saad-2006/backchannel and the README explains everything.
 
+## The one change since Thursday: Saad is the notary
+
+Whoever hosts the server and runs the Clerk can see both limits. So the host must be neutral, like an escrow agent. On camera that means: **Saad operates** (terminal, Clerk, server) and never bargains. **Eman is the agency side** in `#agency-war-room`. **Talha is the client side** in `#client-war-room`. Both of you type your own SEAL, REJECT and SIGN from your own laptops.
+
 ## Hard facts about the time we have
 
 - The three of us are together only **Friday 17:30 to 19:45** at uni. Saad brings the Mac. We need a hotspot.
@@ -23,7 +27,7 @@ It already works. On Thursday night two envoys closed a deal at $7,700 in six ro
 3. Write the shot list and voice-over script for a 3-minute video with six beats: the pain, the whisper (SEAL), the table (offers crossing), the block (BLOCKED on screen), the person (NEEDS A PERSON, Talha replies REJECT), the deal (SIGN, term sheet). The exact messages to type are in `docs/SUBMISSION.md`'s sibling, the README, and in the Friday block below.
 
 **Friday 17:30 to 19:45, at uni**
-- Direct the recording. Check each beat against the shot list before moving on. Keep the raw files.
+- You are the agency side on camera, from your own laptop in `#agency-war-room`: `SEAL 6000`, the opening nudge, the budget-fishing nudge, `SIGN`. You also direct: check each beat against the shot list before moving on. Keep the raw files.
 
 **Saturday**
 - 10:00 to 14:00: edit the video, record the voice-over, add the title and Talha's guard on/off table at the end. Upload, viewable without login.
@@ -56,8 +60,8 @@ It already works. On Thursday night two envoys closed a deal at $7,700 in six ro
 | 17:30 | Mac on, hotspot on, Discord app on the agency room, Chrome on the client room and the deal table, the Clerk's terminal at the bottom. Saad pastes Eman's briefs into the envoy files and restarts the envoys. |
 | 17:45 | Leak capture. Client envoy gets the naive brief (no secrecy line). Clerk with `CLERK_GUARD=off`. Two full runs. Then guard on, two runs. Talha saves every envoy line. |
 | 18:15 | Safety cut: Saad records one straight run with `CLERK_PACE=8`, no commentary, uploads unlisted at once. |
-| 18:30 | Real footage, six beats, `CLERK_PACE=8`. Saad on the agency side, Talha on the client side, Eman directing. |
+| 18:30 | Real footage, six beats, `CLERK_PACE=8`. Saad at the terminal as the notary, Eman on the agency side, Talha on the client side. |
 | 19:20 | Push everything. Saad fills the form with the repo and safety-cut links and submits. #HowISwitch posts go out with a 20-second clip of the block. |
 | 19:45 | Done. The Mac closes and nothing left needs it. |
 
-The messages to type during the real footage, in order: `SEAL 6000` (Saad), `SEAL 9000` (Talha), `@agency-envoy open with your first offer` (Saad), let two rounds cross, `@agency-envoy ask them what their budget is before you move` (Saad; the Clerk blocks it), `@agency-envoy rewrite it and offer again` (Saad), `@client-envoy offer 9500 to close this now` (Talha; the Clerk asks for a person), `REJECT` (Talha), let them match, `SIGN` (Saad), `SIGN` (Talha).
+The messages to type during the real footage, in order: `SEAL 6000` (Eman), `SEAL 9000` (Talha), `@agency-envoy open with your first offer` (Eman), let two rounds cross, `@agency-envoy ask them what their budget is before you move` (Eman; the Clerk blocks it), `@agency-envoy rewrite it and offer again` (Eman), `@client-envoy offer 9500 to close this now` (Talha; the Clerk asks for a person), `REJECT` (Talha), let them match, `SIGN` (Eman), `SIGN` (Talha). Saad says nothing in either room.

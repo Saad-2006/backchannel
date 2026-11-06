@@ -27,6 +27,7 @@ class Action:
 @dataclass
 class Deal:
     guard: bool = True                         # False only for the guard-off leak test
+    notes: bool = True                         # False strips every sentence: only amounts cross
     sealed: dict[str, int] = field(default_factory=dict)
     rounds: int = 0
     last_offer: dict[str, int] = field(default_factory=dict)
@@ -82,6 +83,8 @@ class Deal:
         if self.rounds >= ROUND_CAP:
             return self._note("OFFER", "stopped", f"round cap {ROUND_CAP} reached",
                               [Action(side, f"Clerk: round cap of {ROUND_CAP} reached. The people take it from here: SIGN or walk.")])
+        if not self.notes and cmd.note:
+            cmd = Command(cmd.word, cmd.amount, "")
         if self.guard:
             reasons = rules.scan_for_leaks(cmd.note)
             if reasons:

@@ -3,6 +3,7 @@
 Run from the repo root:  python -m clerk.main
 Set CLERK_GUARD=off to switch the leak scan off (only for the guard on/off test).
 Set CLERK_PACE=8 to wait eight seconds before carrying an offer across, so a recording can keep up.
+Set CLERK_NOTES=off and only amounts cross: no sentence, so nothing to scan and nothing to leak.
 """
 from __future__ import annotations
 
@@ -20,8 +21,9 @@ SIDES = {"agency-war-room": "agency", "client-war-room": "client", "deal-table":
 LOG_FILE = Path(__file__).resolve().parent.parent / "logs" / "clerk.jsonl"
 GUARD = os.environ.get("CLERK_GUARD", "on").lower() != "off"
 PACE = float(os.environ.get("CLERK_PACE", "0"))
+NOTES = os.environ.get("CLERK_NOTES", "on").lower() != "off"
 
-deal = Deal(guard=GUARD)
+deal = Deal(guard=GUARD, notes=NOTES)
 switch = Switch()
 
 
@@ -93,7 +95,7 @@ def on_event(event: str, ev: dict) -> None:
 def main() -> None:
     switch.check_health()
     switch.load_or_register()
-    log(f"Clerk up. Guard {'ON' if GUARD else 'OFF'}. Pace {PACE:g}s. Commands: {', '.join(rules.COMMANDS)}. Round cap {ROUND_CAP}. Log: {LOG_FILE}")
+    log(f"Clerk up. Guard {'ON' if GUARD else 'OFF'}. Notes {'ON' if NOTES else 'OFF'}. Pace {PACE:g}s. Commands: {', '.join(rules.COMMANDS)}. Round cap {ROUND_CAP}. Log: {LOG_FILE}")
     switch.run(on_event)
 
 

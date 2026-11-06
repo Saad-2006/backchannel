@@ -4,6 +4,18 @@ Two sides want to close a deal. Neither will say its limit. Each side briefs its
 
 Built for the Flip the Switch hackathon (Track 01, Best Business Workflow) by team Context Switch: Saad Mehmood, Talha Hamid, Eman Fatima.
 
+## The trust model: a notary, not a referee you have to trust
+
+Whoever runs the Clerk can see both limits, because the Clerk holds them in memory. So the host must be a **neutral third party** that neither side is, the same way an escrow agent or a notary works. Each side trusts the notary and the code it runs, and nothing else: not the other side, and not any AI.
+
+| Role | In production | In our demo |
+|---|---|---|
+| Notary | runs the Switch server, the Discord server and the Clerk; is in no deal and never bargains | Saad: operates the terminal, stays out of both war rooms on camera |
+| Agency | its own people and its own envoy, in a room the client cannot see | Eman and `agency-envoy` |
+| Client | its own people and its own envoy, in a room the agency cannot see | Talha and `client-envoy` |
+
+What each party can see: its own room, and the public deal table. What the notary can see: everything, which is why the notary is a role you trust, not a party. The AI envoys see only their own room and know only their own side's limit, and the Clerk makes sure that limit never crosses.
+
 ## The rooms
 
 | Room | Who is in it | What happens there |
@@ -45,7 +57,7 @@ python3.12 -m venv .venv && .venv/bin/pip install pytest
 .venv/bin/python -m clerk.main        # registers the Clerk on first run, then streams
 ```
 
-Options: `CLERK_PACE=8` waits eight seconds before an offer crosses, so a recording can keep up. `CLERK_GUARD=off` disables the leak scan (only for the guard on/off experiment).
+Options: `CLERK_PACE=8` waits eight seconds before an offer crosses, so a recording can keep up. `CLERK_NOTES=off` lets only amounts cross, no sentences. `CLERK_GUARD=off` disables the leak scan (only for the guard on/off experiment).
 
 Set-up in Discord and Console:
 
@@ -56,11 +68,12 @@ Set-up in Discord and Console:
 
 The Clerk's key is written to `clerk/.clerk-creds.json` (gitignored) the first time it runs; the registration token is read from Console's env file and never printed.
 
-## Known limits
+## Known limits, and what to do about each
 
-- The Discord server owner can read every channel. Switch keeps the envoys apart; it cannot keep the host out.
-- Everything runs on one machine in the demo.
-- The leak scan catches patterns it knows. The guard on/off experiment in `docs/leak-test/` shows how much gets through without it.
+- **The host sees everything.** The Discord owner reads every channel and the Clerk holds both limits. That is why the host is a neutral notary (see the trust model above). Keeping the notary honest is the same problem as keeping an escrow agent honest, and not one this project tries to solve with code.
+- **One machine in the demo.** Both envoys and the Clerk run on the notary's Mac. Switch already supports agents on other machines, so in production each side runs its own envoy on its own computer and only the Clerk runs with the notary.
+- **The leak scan catches patterns it knows.** Two answers. The guard on/off experiment in `docs/leak-test/` measures how much gets through without it. And `CLERK_NOTES=off` removes the risk entirely: only amounts cross, no sentence at all, so there is nothing to scan and nothing to leak. Sentences are a feature you turn on when you want persuasion and accept the scan as the guard.
+- **Next step we did not build:** an envoy does not need to know its side's limit at all. The Clerk already stops any offer past it and asks a person. An envoy that never knows the number cannot leak it. We kept the limit in the envoy's briefing so the guard on/off experiment has something to measure.
 
 ## Layout
 
