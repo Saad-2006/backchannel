@@ -59,6 +59,23 @@ Setup:
 
 The Clerk's key lands in `clerk/.clerk-creds.json` (gitignored). The registration token is read from Console's env file and never printed.
 
+## Security model and threat boundaries
+
+| Question | Answer |
+|---|---|
+| Can an envoy see the other room? | No. Switch room membership. |
+| Can an envoy read the other side's limit? | No. It never enters its room. |
+| Can the Clerk read both limits? | Yes, in memory only. |
+| Can the mediator host read both limits? | Yes. That is why the host is neutral. |
+| Can arbitrary prose cross? | No by default: only amounts. With sentences on, a scan guards them. |
+| Is the leak scan perfect? | No. It catches patterns, not paraphrase. |
+| Is an envoy told why an offer was held? | No. It sees "held". Whether it was held is still observable, so the guarantee is: no explicit limit or reason is ever disclosed. A hold cap (3 per side) limits probing. |
+| Can a seal change mid-deal? | No. Immutable until the Clerk restarts. |
+| Who can SEAL, APPROVE, REJECT, SIGN? | People only. Anything Switch marks as an agent, or named like an envoy, is refused. |
+| What happens on restart? | Fail closed. Nothing is restored, no old approval is reused, both sides seal again. |
+| Redelivered or failed messages? | A message id is handled once. A failed post is logged as a failed delivery; the decision stands. |
+| Cryptographically private? | No. Controlled disclosure through a trusted mediator. |
+
 ## Limits, honestly
 
 - **The host sees everything.** That is why the host is a neutral mediator. Keeping a mediator honest is a contract problem, not a code problem.

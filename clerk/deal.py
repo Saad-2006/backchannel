@@ -15,6 +15,7 @@ OTHER = {"agency": "client", "client": "agency"}
 LIMIT_NAME = {"agency": "floor", "client": "ceiling"}
 ENVOY = {"agency": "agency-envoy", "client": "client-envoy"}
 ROUND_CAP = 6
+HOLD_CAP = 3   # held offers per side before the people must take over; limits boundary probing
 REPLY_HINT = "Reply in this room with one line: OFFER <amount> <one short sentence>"
 
 
@@ -35,6 +36,7 @@ class Deal:
     agreed: int | None = None
     signed: dict[str, str] = field(default_factory=dict)        # side -> who signed
     closed: bool = False
+    holds: dict[str, int] = field(default_factory=dict)         # side -> offers held so far
     log: list[tuple[str, str, str]] = field(default_factory=list)  # (command, decision, reason)
 
     # ---- entry point -------------------------------------------------------------------
@@ -60,6 +62,10 @@ class Deal:
 
     # ---- commands ----------------------------------------------------------------------
     def _seal(self, side: str, cmd: Command) -> list[Action]:
+        if side in self.sealed:
+            return self._note("SEAL", "refused", "already sealed; a seal is immutable for the deal",
+                              [Action(side, "Clerk: this side is already sealed. A seal cannot change during a deal. "
+                                            "To start over, the mediator restarts the Clerk.")])
         self.sealed[side] = cmd.amount
         out = [Action(side, f"Clerk: sealed. I hold the {side}'s {LIMIT_NAME[side]} in memory only. "
                             "It is never written down or shown.")]
@@ -93,6 +99,11 @@ class Deal:
                                                 + "; ".join(reasons) + ". The only number allowed in an offer is the offer. "
                                                 + "Rewrite the sentence and OFFER again.")])
         if rules.check_limit(side, cmd.amount, self.sealed[side]) == "past_limit":
+            if self.holds.get(side, 0) >= HOLD_CAP:
+                return self._note("OFFER", "stopped", f"hold cap {HOLD_CAP} reached for {side}",
+                                  [Action(side, f"Clerk: {rules.money(cmd.amount)} is not sent. Too many held offers; "
+                                                "the people on this side take it from here.")])
+            self.holds[side] = self.holds.get(side, 0) + 1
             self.pending[side] = cmd
             return self._note("OFFER", "needs a person", f"past the {side}'s {LIMIT_NAME[side]}",
                               [Action(side, f"Clerk: NEEDS A PERSON. {rules.money(cmd.amount)} is held. Nothing was sent. "
@@ -111,7 +122,7 @@ class Deal:
             return self._note("REJECT", "dropped", "person rejected the overrun",
                               [Action(side, f"Clerk: dropped. Nothing was sent. @{ENVOY[side]} make a different offer.")])
         if self.agreed is not None:
-            self.agreed, self.signed = None, {}
+            self.agreed, self.signed, self.last_offer = None, {}, {}  # reopening needs fresh offers
             return self._note("REJECT", "reopened", "person rejected the agreed price",
                               [Action(side, f"Clerk: the agreed price is withdrawn. @{ENVOY[side]} continue."),
                                Action(OTHER[side], f"Clerk: the {side} withdrew from the agreed price. @{ENVOY[OTHER[side]]} continue."),
@@ -119,6 +130,8 @@ class Deal:
         return self._note("REJECT", "ignored", "nothing to reject", [Action(side, "Clerk: nothing is waiting to be rejected.")])
 
     def _sign(self, side: str, sender: str) -> list[Action]:
+        if side in self.signed:
+            return self._note("SIGN", "ignored", "already signed", [Action(side, "Clerk: this side has already signed.")])
         if self.agreed is None:
             other_offer = self.last_offer.get(OTHER[side])
             if other_offer is None:

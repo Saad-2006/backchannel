@@ -25,6 +25,7 @@ NOTES = os.environ.get("CLERK_NOTES", "off").lower() == "on"
 
 deal = Deal(guard=GUARD, notes=NOTES)
 switch = Switch()
+seen: set[str] = set()   # message ids already handled; a redelivered event never acts twice
 
 
 def record(room: str, command: str, verdict: str, reason: str) -> None:
@@ -53,12 +54,15 @@ def room_for(side: str) -> str | None:
     return None
 
 
-def say(side: str, text: str) -> None:
+def say(side: str, text: str) -> bool:
     rid = room_for(side)
     if rid is None:
-        log(f"no room for side {side!r}; wanted to say: {text[:80]!r}")
-        return
-    switch.post(rid, text)
+        record("-", "deliver", "failed", f"no room for side {side!r}")
+        return False
+    ok = switch.post(rid, text)
+    if not ok:
+        record(switch.rooms.get(rid, rid), "deliver", "failed", "Switch refused the post; the decision stands and is logged")
+    return ok
 
 
 def on_message(ev: dict) -> None:
@@ -68,13 +72,20 @@ def on_message(ev: dict) -> None:
     sender = p.get("sender_name") or p.get("sender") or "?"
     if sender == NAME or p.get("sender") == switch.agent_id:
         return  # never act on our own posts
+    mid = p.get("message_id")
+    if mid:
+        if mid in seen:
+            return  # duplicate delivery after a reconnect
+        seen.add(mid)
     side = side_of(room_name)
     if side is None or side == "table":
         return  # Mattermost rooms, and nobody commands from the public table
     cmd = rules.parse_command(body)
     if cmd is None:
         return  # chatter
-    is_person = sender not in ENVOY.values()
+    # Authority: an envoy is anything Switch marks as an agent, or anything carrying an envoy's name.
+    # Only what is left counts as a person. Deny by default.
+    is_person = p.get("sender_kind") != "agent" and sender not in ENVOY.values()
     before = len(deal.log)
     actions = deal.handle(side, sender, is_person, cmd)
     for command, verdict, reason in deal.log[before:]:
