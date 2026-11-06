@@ -15,6 +15,12 @@ Clients hide their **budget**. Agencies and freelancers hide their **floor**. De
 - **A mediator** runs the server and the Clerk, the way escrow or a deal desk works. Neither party hosts. The guarantee is **controlled disclosure through a trusted mediator**, not zero-knowledge: each party trusts the mediator and the published code, nothing else.
 - **People stay in control**: only a person can SEAL, APPROVE, REJECT or SIGN.
 
+## Three ideas in it
+
+1. **Intelligence and authority are separate.** AI agents negotiate. Deterministic code decides what they are allowed to do. We did not police two AIs with a third AI.
+2. **Information flow is controlled.** Private limits stay in their own room. Only approved, structured offers cross.
+3. **People keep sovereignty over commitments.** Agents bargain; humans authorize exceptions and sign.
+
 ## How a deal runs
 
 | Step | Who | What |
