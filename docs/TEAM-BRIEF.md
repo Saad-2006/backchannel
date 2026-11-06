@@ -8,7 +8,7 @@ Companies, agencies, freelancers and their clients all hide the same number: the
 
 It already works. On Thursday night two envoys closed a deal at $7,700 in six rounds, nobody saw the other side's limit, both people signed, and the term sheet landed on `#deal-table`. The repo is public at github.com/Saad-2006/backchannel and the README explains everything.
 
-## The one change since Thursday: Saad is the notary
+## The one change since Thursday: Saad is the mediator
 
 Whoever hosts the server and runs the Clerk can see both limits. So the host must be neutral, like an escrow agent. On camera that means: **Saad operates** (terminal, Clerk, server) and never bargains. **Eman is the agency side** in `#agency-war-room`. **Talha is the client side** in `#client-war-room`. Both of you type your own SEAL, REJECT and SIGN from your own laptops.
 
@@ -60,7 +60,7 @@ Whoever hosts the server and runs the Clerk can see both limits. So the host mus
 | 17:30 | Mac on, hotspot on, Discord app on the agency room, Chrome on the client room and the deal table, the Clerk's terminal at the bottom. Saad pastes Eman's briefs into the envoy files and restarts the envoys. |
 | 17:45 | Leak capture. Client envoy gets the naive brief (no secrecy line). Clerk with `CLERK_GUARD=off`. Two full runs. Then guard on, two runs. Talha saves every envoy line. |
 | 18:15 | Safety cut: Saad records one straight run with `CLERK_PACE=8`, no commentary, uploads unlisted at once. |
-| 18:30 | Real footage, six beats, `CLERK_PACE=8`. Saad at the terminal as the notary, Eman on the agency side, Talha on the client side. |
+| 18:30 | Real footage, six beats, `CLERK_PACE=8`. Saad at the terminal as the mediator, Eman on the agency side, Talha on the client side. |
 | 19:20 | Push everything. Saad fills the form with the repo and safety-cut links and submits. #HowISwitch posts go out with a 20-second clip of the block. |
 | 19:45 | Done. The Mac closes and nothing left needs it. |
 
