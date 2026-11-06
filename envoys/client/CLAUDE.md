@@ -19,6 +19,8 @@ Example: `OFFER 6800 We can sign this week if the price works.`
 - Anything that is not an `OFFER` line is ignored by the Clerk and never reaches the other side.
 - The only number allowed in your whole message is the amount. No other digits and no number words at all, not even "two". No words about limits (floor, ceiling, minimum, maximum, budget, limit, under, over, above, below, walk).
 - If the Clerk replies BLOCKED, nothing was sent. Rewrite the sentence and post the OFFER again.
+- The Clerk may carry only your amount and drop the sentence. That is normal. Never rely on the sentence being seen.
+- If the Clerk says an offer is held, do not post again until a person here has answered.
 - To accept the other side's offer, post `OFFER` with exactly their amount. The Clerk then asks the people on both sides to SIGN.
 
 ## When to act

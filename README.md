@@ -11,8 +11,8 @@ Clients hide their **budget**. Agencies and freelancers hide their **floor**. De
 ## Solution
 
 - **Two private Discord rooms**, one per side. Each side's people and its own **Claude Code envoy**. The envoys never share a room.
-- **The Clerk**: plain Python, no AI, the only member of both rooms. It parses every offer, **blocks leaks**, **enforces limits**, relays clean offers, and writes the **term sheet**.
-- **A mediator** runs the server and the Clerk, the way escrow or a deal desk works. Neither party hosts. Each party trusts the mediator and the published code, nothing else.
+- **The Clerk**: plain Python, no AI, the only member of both rooms. It parses every offer, **enforces limits**, relays clean offers, and writes the **term sheet**. By default **only the amount crosses**. Sentences are opt-in, and a **leak scan** guards them.
+- **A mediator** runs the server and the Clerk, the way escrow or a deal desk works. Neither party hosts. The guarantee is **controlled disclosure through a trusted mediator**, not zero-knowledge: each party trusts the mediator and the published code, nothing else.
 - **People stay in control**: only a person can SEAL, APPROVE, REJECT or SIGN.
 
 ## How a deal runs
@@ -20,13 +20,13 @@ Clients hide their **budget**. Agencies and freelancers hide their **floor**. De
 | Step | Who | What |
 |---|---|---|
 | `SEAL 6000` | a person, own room | limit held in Clerk memory only; never logged, never shown |
-| `OFFER 8500 one sentence` | envoy | leak scan, limit check, relay to the other room, line on `#deal-table` |
-| BLOCKED | Clerk | sentence had a second number, a number word or a limit word; nothing sent |
+| `OFFER 8500` | envoy | limit check, relay to the other room, line on `#deal-table`. With `CLERK_NOTES=on` one sentence may follow, after the leak scan |
+| BLOCKED | Clerk | (sentences on) the sentence had a second number, a number word or a limit word; nothing sent |
 | NEEDS A PERSON | Clerk | offer crossed that side's own limit; waits for `APPROVE` or `REJECT` |
 | match | both envoys | same amount means agreed |
 | `SIGN` + `SIGN` | a person on each side | term sheet posted to `#deal-table` |
 
-**The leak rule:** the only number allowed in an offer is the offer. Six rounds, then the people take over.
+**The leak rule, when sentences are on:** the only number allowed in an offer is the offer. Six rounds, then the people take over. An offer that crosses a side's own limit is held without telling the envoy why; the reason goes to the people and the log.
 
 ## Where Switch is used
 
@@ -47,7 +47,7 @@ python3.12 -m venv .venv && .venv/bin/pip install pytest
 | Env | Effect |
 |---|---|
 | `CLERK_PACE=8` | wait 8 s before an offer crosses, for recordings |
-| `CLERK_NOTES=off` | only amounts cross, no sentences, nothing to leak |
+| `CLERK_NOTES=on` | let one scanned sentence travel with each offer (default: amounts only) |
 | `CLERK_GUARD=off` | leak scan off, for the guard on/off experiment only |
 
 Setup:
@@ -63,7 +63,7 @@ The Clerk's key lands in `clerk/.clerk-creds.json` (gitignored). The registratio
 
 - **The host sees everything.** That is why the host is a neutral mediator. Keeping a mediator honest is a contract problem, not a code problem.
 - **One machine in the demo.** In production each side runs its own envoy on its own computer; only the Clerk runs with the mediator.
-- **The scan knows patterns.** `docs/leak-test/` measures what gets through with the guard off. `CLERK_NOTES=off` removes the risk: no sentence, no leak.
+- **The scan knows patterns, not paraphrase.** That is why the default is amounts only, where there is nothing to leak. Turn sentences on and you accept the scan as the guard; `docs/leak-test/` measures what it catches.
 - **Next:** an envoy that never learns its limit. The Clerk already stops anything past it, so the envoy doesn't need the number.
 
 ## Layout

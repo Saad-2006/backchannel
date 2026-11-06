@@ -27,7 +27,7 @@ class Action:
 @dataclass
 class Deal:
     guard: bool = True                         # False only for the guard-off leak test
-    notes: bool = True                         # False strips every sentence: only amounts cross
+    notes: bool = False                        # False (default): only amounts cross. True: a scanned sentence may travel.
     sealed: dict[str, int] = field(default_factory=dict)
     rounds: int = 0
     last_offer: dict[str, int] = field(default_factory=dict)
@@ -95,8 +95,8 @@ class Deal:
         if rules.check_limit(side, cmd.amount, self.sealed[side]) == "past_limit":
             self.pending[side] = cmd
             return self._note("OFFER", "needs a person", f"past the {side}'s {LIMIT_NAME[side]}",
-                              [Action(side, f"Clerk: NEEDS A PERSON. {rules.money(cmd.amount)} is past the {side}'s "
-                                            f"{LIMIT_NAME[side]}. Nothing was sent. A person here replies APPROVE or REJECT.")])
+                              [Action(side, f"Clerk: NEEDS A PERSON. {rules.money(cmd.amount)} is held. Nothing was sent. "
+                                            "A person here replies APPROVE or REJECT.")])
         return self._relay(side, cmd, "relayed")
 
     def _approve(self, side: str) -> list[Action]:

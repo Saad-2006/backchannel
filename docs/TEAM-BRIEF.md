@@ -58,9 +58,9 @@ Whoever hosts the server and runs the Clerk can see both limits. So the host mus
 | When | What |
 |---|---|
 | 17:30 | Mac on, hotspot on, Discord app on the agency room, Chrome on the client room and the deal table, the Clerk's terminal at the bottom. Saad pastes Eman's briefs into the envoy files and restarts the envoys. |
-| 17:45 | Leak capture. Client envoy gets the naive brief (no secrecy line). Clerk with `CLERK_GUARD=off`. Two full runs. Then guard on, two runs. Talha saves every envoy line. |
+| 17:45 | Leak capture, sentences on. Client envoy gets the naive brief (no secrecy line). Clerk with `CLERK_NOTES=on CLERK_GUARD=off`. Two full runs. Then `CLERK_NOTES=on` with the guard on, two runs. Talha saves every envoy line. |
 | 18:15 | Safety cut: Saad records one straight run with `CLERK_PACE=8`, no commentary, uploads unlisted at once. |
-| 18:30 | Real footage, six beats, `CLERK_PACE=8`. Saad at the terminal as the mediator, Eman on the agency side, Talha on the client side. |
+| 18:30 | Real footage, `CLERK_PACE=8`. Main run in the default structured mode (amounts only): seal, offers, hold and REJECT, match, SIGN. Then restart with `CLERK_NOTES=on` for a 30-second segment: Eman nudges the envoy to fish for the budget, the Clerk blocks it. Saad at the terminal as the mediator, Eman on the agency side, Talha on the client side. |
 | 19:20 | Push everything. Saad fills the form with the repo and safety-cut links and submits. #HowISwitch posts go out with a 20-second clip of the block. |
 | 19:45 | Done. The Mac closes and nothing left needs it. |
 

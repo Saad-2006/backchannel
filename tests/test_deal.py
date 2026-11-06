@@ -11,8 +11,8 @@ def texts(actions):
     return [(a.to, a.text) for a in actions]
 
 
-def sealed_deal():
-    d = Deal()
+def sealed_deal(notes=True):
+    d = Deal(notes=notes)
     go(d, "agency", "Saad", "SEAL 6000")
     out = go(d, "client", "Talha", "SEAL 9000")
     return d, out
@@ -64,7 +64,7 @@ def test_leak_is_blocked_and_nothing_crosses():
 
 
 def test_guard_off_lets_the_leak_through():
-    d = Deal(guard=False)
+    d = Deal(guard=False, notes=True)
     go(d, "agency", "Saad", "SEAL 6000")
     go(d, "client", "Talha", "SEAL 9000")
     out = texts(go(d, "agency", "agency-envoy", "OFFER 7000 Honestly we can't go under 6k."))
@@ -75,6 +75,7 @@ def test_past_limit_waits_for_a_person_then_approve_relays():
     d, _ = sealed_deal()
     out = texts(go(d, "agency", "agency-envoy", "OFFER 5800 To close today."))
     assert out[0][0] == "agency" and "NEEDS A PERSON" in out[0][1] and "6,000" not in out[0][1]
+    assert "floor" not in out[0][1]  # the envoy is not told why; the reason stays in the log for people
     assert d.rounds == 0
     out = texts(go(d, "agency", "agency-envoy", "OFFER 5900 Again."))
     assert "waiting" in out[0][1]
@@ -133,8 +134,8 @@ def test_closed_deal_ignores_everything():
     assert "closed" in go(d, "agency", "agency-envoy", "OFFER 7000 Hm.")[0].text
 
 
-def test_notes_off_means_only_the_amount_crosses():
-    d = Deal(notes=False)
+def test_default_is_structured_only_the_amount_crosses():
+    d = Deal()
     go(d, "agency", "Eman", "SEAL 6000")
     go(d, "client", "Talha", "SEAL 9000")
     out = texts(go(d, "agency", "agency-envoy", "OFFER 8000 Honestly our floor is 6000 so take it."))
