@@ -26,6 +26,7 @@ NOTES = os.environ.get("CLERK_NOTES", "off").lower() == "on"
 deal = Deal(guard=GUARD, notes=NOTES)
 switch = Switch()
 seen: set[str] = set()   # message ids already handled; a redelivered event never acts twice
+active: dict[str, str] = {}   # side -> the room id we last heard a message in; deleted Discord channels linger as dead rooms with the same name
 
 
 def record(room: str, command: str, verdict: str, reason: str) -> None:
@@ -46,6 +47,9 @@ def side_of(room_name: str) -> str | None:
 
 
 def room_for(side: str) -> str | None:
+    """The live room for a side: the one we last heard a message in, else the first name match."""
+    if side in active:
+        return active[side]
     for _ in range(2):
         for rid, name in switch.rooms.items():
             if side_of(name) == side:
@@ -78,8 +82,13 @@ def on_message(ev: dict) -> None:
             return  # duplicate delivery after a reconnect
         seen.add(mid)
     side = side_of(room_name)
-    if side is None or side == "table":
-        return  # Mattermost rooms, and nobody commands from the public table
+    if side is None:
+        return  # Mattermost rooms
+    if active.get(side) != ev.get("room_id"):
+        active[side] = ev.get("room_id")
+        log(f"live room for {side!r} is now {room_name!r} ({ev.get('room_id')})")
+    if side == "table":
+        return  # nobody commands from the public table
     cmd = rules.parse_command(body)
     if cmd is None:
         return  # chatter
