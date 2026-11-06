@@ -139,6 +139,7 @@ def test_default_is_structured_only_the_amount_crosses():
     go(d, "agency", "Eman", "SEAL 6000")
     go(d, "client", "Talha", "SEAL 9000")
     out = texts(go(d, "agency", "agency-envoy", "OFFER 8000 Honestly our floor is 6000 so take it."))
-    assert out[0][0] == "client" and "$8,000" in out[0][1]
-    assert "floor" not in out[0][1] and "6000" not in out[0][1] and '"' not in out[0][1]
+    assert out[0][0] == "agency" and "STRIPPED" in out[0][1]
+    assert out[1][0] == "client" and "$8,000" in out[1][1]
+    assert "floor" not in out[1][1] and "6000" not in out[1][1] and '"' not in out[1][1]
     assert d.rounds == 1

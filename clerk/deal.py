@@ -89,8 +89,10 @@ class Deal:
         if self.rounds >= ROUND_CAP:
             return self._note("OFFER", "stopped", f"round cap {ROUND_CAP} reached",
                               [Action(side, f"Clerk: round cap of {ROUND_CAP} reached. The people take it from here: SIGN or walk.")])
+        stripped = False
         if not self.notes and cmd.note:
             cmd = Command(cmd.word, cmd.amount, "")
+            stripped = True
         if self.guard:
             reasons = rules.scan_for_leaks(cmd.note)
             if reasons:
@@ -108,7 +110,10 @@ class Deal:
             return self._note("OFFER", "needs a person", f"past the {side}'s {LIMIT_NAME[side]}",
                               [Action(side, f"Clerk: NEEDS A PERSON. {rules.money(cmd.amount)} is held. Nothing was sent. "
                                             "A person here replies APPROVE or REJECT.")])
-        return self._relay(side, cmd, "relayed")
+        out = self._relay(side, cmd, "relayed")
+        if stripped:
+            out = [Action(side, f"Clerk: STRIPPED. Only {rules.money(cmd.amount)} crossed. Your sentence stayed in this room; sentences are off.")] + out
+        return out
 
     def _approve(self, side: str) -> list[Action]:
         cmd = self.pending.pop(side, None)
