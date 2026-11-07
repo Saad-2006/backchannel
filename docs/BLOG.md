@@ -1,6 +1,6 @@
 # We let two AIs negotiate a deal on Switch, then stopped one from leaking the number
 
-*Built in 48 hours for the Flip the Switch hackathon by team Context Switch. Repo: https://github.com/Saad-2006/backchannel. Demo: https://youtu.be/8SV46XGqTIU*
+*Built in 24 hours for the Flip the Switch hackathon by team Context Switch. Repo: https://github.com/Saad-2006/backchannel. Demo: https://youtu.be/8SV46XGqTIU*
 
 ## The problem
 
