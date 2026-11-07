@@ -4,6 +4,8 @@
 
 Flip the Switch hackathon · Track 01, Best Business Workflow · team Context Switch: Saad Mehmood, Talha Hamid, Eman Fatima.
 
+**Demo video:** https://youtu.be/8SV46XGqTIU (1:53)
+
 ## Problem
 
 Clients hide their **budget**. Agencies and freelancers hide their **floor**. Deals stall for weeks. Handing the bargaining to an AI is the obvious fix, but AI models are helpful: ask nicely and they leak the number. A prompt is not a lock.
