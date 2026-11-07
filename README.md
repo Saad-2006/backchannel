@@ -5,6 +5,8 @@
 Flip the Switch hackathon · Track 01, Best Business Workflow · team Context Switch: Saad Mehmood, Talha Hamid, Eman Fatima.
 
 **Demo video:** https://youtu.be/8SV46XGqTIU (1:53)
+**Blog:** https://dev.to/talhahmd/we-let-two-ais-negotiate-a-deal-and-then-stopped-them-from-leaking-the-secret-number-39ne
+**#HowISwitch:** https://www.linkedin.com/posts/saad-designs_howiswitch-fliptheswitch-share-7524899191131922434-KvV5/
 
 ## Problem
 
